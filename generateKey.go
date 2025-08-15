@@ -2,6 +2,8 @@ package main
 
 import (
 	"crypto/rand"
+	"encoding/base32"
+	"encoding/base64"
 	"flag"
 	"fmt"
 	"os"
@@ -10,15 +12,21 @@ import (
 func main() {
 	bytes8 := flag.Bool("8", false, "generate key 8 bytes long")
 	bytes16 := flag.Bool("16", false, "generate key 16 bytes long")
-	bytes32 := flag.Bool("32", false, "generate key 32 bytes long")
+
+	toBase32 := flag.Bool("base32", false, "turn key generated into base32 encoding")
+	toBase64 := flag.Bool("base64", false, "turn key generated into base64 encoding")
+
 	flag.Usage = func() {
-		fmt.Fprintf(os.Stderr, "Usage of KeyCrypt :)\n")
+		fmt.Fprintf(os.Stderr, "\t--Usage of KeyCrypt--\n")
 		flag.PrintDefaults() // Prints the auto-generated flag help
-		fmt.Fprintln(os.Stderr, "Defaults to 32-byte-long key if no flag is provided.")
-		fmt.Fprintln(os.Stderr, "If multiple flags provided, the first one takes priority")
+		fmt.Fprintln(os.Stderr, "Defaults to 32-byte-long key if no flag is set.")
+		fmt.Fprintln(os.Stderr, "The output format is hex representation of the key bytes if not encoding option is set")
+		fmt.Fprintln(os.Stderr, "By default he program does not encode key generated to base32 or base64")
+		fmt.Fprintln(os.Stderr, "If multiple flags provided either byte size or encoding, the first one in each category takes precedence")
 		fmt.Fprintln(os.Stderr, `Couple with "| clip" on Windows (or "| pbcopy" on macOS, "| xclip -selection clipboard" on Linux) for adding it directly to clipboard.`)
 		fmt.Fprintln(os.Stderr, `Examples:`)
 		fmt.Fprintln(os.Stderr, `  cryptkey -16`)
+		fmt.Fprintln(os.Stderr, `  cryptkey -16 -base64`)
 		fmt.Fprintln(os.Stderr, `  cryptkey -16 | clip (Windows)`)
 		fmt.Fprintln(os.Stderr, `  cryptkey | pbcopy (macOS)`)
 	}
@@ -30,8 +38,6 @@ func main() {
 		keyLength = 8
 	} else if *bytes16 {
 		keyLength = 16
-	} else if *bytes32 {
-		keyLength = 32
 	} else {
 		keyLength = 32
 	}
@@ -41,6 +47,15 @@ func main() {
 		fmt.Println("Coudn't generate key: ", err.Error())
 		os.Exit(1)
 	}
-	fmt.Printf("%x", keyGenerated)
-	// Run paired with | clip in windows or equivalent to own OS for getting to clipboard
+	var encodedKey string
+	if *toBase32 || *toBase64 {
+		if *toBase32 {
+			encodedKey = base32.StdEncoding.EncodeToString(keyGenerated)
+		} else if *toBase64 {
+			encodedKey = base64.StdEncoding.EncodeToString(keyGenerated)
+		}
+		fmt.Printf("%s", encodedKey)
+	} else {
+		fmt.Printf("%x", keyGenerated)
+	}
 }
