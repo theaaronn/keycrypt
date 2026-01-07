@@ -25,10 +25,10 @@ func main() {
 		fmt.Fprintln(os.Stderr, "If multiple flags provided either byte size or encoding, the first one in each category takes precedence")
 		fmt.Fprintln(os.Stderr, `Couple with "| clip" on Windows (or "| pbcopy" on macOS, "| xclip -selection clipboard" on Linux) for adding it directly to clipboard.`)
 		fmt.Fprintln(os.Stderr, `Examples:`)
-		fmt.Fprintln(os.Stderr, `  cryptkey -16`)
-		fmt.Fprintln(os.Stderr, `  cryptkey -16 -base64`)
-		fmt.Fprintln(os.Stderr, `  cryptkey -16 | clip (Windows)`)
-		fmt.Fprintln(os.Stderr, `  cryptkey | pbcopy (macOS)`)
+		fmt.Fprintln(os.Stderr, `  keycrypt -16`)
+		fmt.Fprintln(os.Stderr, `  keycrypt -16 -base64`)
+		fmt.Fprintln(os.Stderr, `  keycrypt -16 | clip (Windows)`)
+		fmt.Fprintln(os.Stderr, `  keycrypt | pbcopy (macOS)`)
 	}
 	flag.Parse()
 
