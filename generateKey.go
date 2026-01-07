@@ -56,7 +56,7 @@ func main() {
 		os.Exit(1)
 	}
 	var encodedKey string
-	if *toBase32 || *toBase64 {
+	if *toBase32 || *toBase64 || *toUrlSafeBase64 {
 		if *toBase32 {
 			encodedKey = base32.StdEncoding.EncodeToString(keyGenerated)
 		} else if *toBase64 {
