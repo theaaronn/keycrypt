@@ -62,7 +62,7 @@ func main() {
 		} else if *toBase64 {
 			encodedKey = base64.StdEncoding.EncodeToString(keyGenerated)
 		} else if *toUrlSafeBase64 {
-			encodedKey = base64.URLEncoding.EncodeToString(keyGenerated)
+			encodedKey = base64.RawURLEncoding.EncodeToString(keyGenerated)
 		}
 		fmt.Printf("%s", encodedKey)
 	} else {
