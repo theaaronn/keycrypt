@@ -17,6 +17,8 @@ func main() {
 	toUrlSafeBase64 := flag.Bool("ubase64", false, "turn key generated into url-safe base64 encoding")
 	toBase64 := flag.Bool("base64", false, "turn key generated into base64 encoding")
 
+	version := flag.Bool("version", false, "display version number")
+
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "\t--Usage of KeyCrypt--\n")
 		flag.PrintDefaults() // Prints the auto-generated flag help
@@ -41,6 +43,11 @@ func main() {
 		keyLength = 16
 	} else {
 		keyLength = 32
+	}
+
+	if *version {
+		fmt.Printf("\tKeycrypt :)\n\tVersion 3.0.0\n")
+		os.Exit(0)
 	}
 
 	keyGenerated := make([]byte, keyLength)
