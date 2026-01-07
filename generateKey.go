@@ -14,6 +14,7 @@ func main() {
 	bytes16 := flag.Bool("16", false, "generate key 16 bytes long")
 
 	toBase32 := flag.Bool("base32", false, "turn key generated into base32 encoding")
+	toUrlSafeBase64 := flag.Bool("ubase64", false, "turn key generated into url-safe base64 encoding")
 	toBase64 := flag.Bool("base64", false, "turn key generated into base64 encoding")
 
 	flag.Usage = func() {
@@ -53,6 +54,8 @@ func main() {
 			encodedKey = base32.StdEncoding.EncodeToString(keyGenerated)
 		} else if *toBase64 {
 			encodedKey = base64.StdEncoding.EncodeToString(keyGenerated)
+		} else if *toUrlSafeBase64 {
+			encodedKey = base64.URLEncoding.EncodeToString(keyGenerated)
 		}
 		fmt.Printf("%s", encodedKey)
 	} else {
