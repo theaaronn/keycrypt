@@ -18,6 +18,7 @@ func main() {
 	toBase32 := flag.Bool("base32", false, "turn key generated into base32 encoding")
 	toBase64 := flag.Bool("base64", false, "turn key generated into base64 encoding")
 	toUrlSafeBase64 := flag.Bool("ubase64", false, "turn key generated into url-safe base64 encoding")
+	vip := flag.Bool("vip", false, "my preferred config")
 
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "\t--Usage of KeyCrypt--\n")
@@ -43,6 +44,8 @@ func main() {
 	// Length options
 	var keyLength int
 	switch {
+	case *vip:
+		keyLength = 16
 	case *bytes8:
 		keyLength = 8
 	case *bytes16:
@@ -61,6 +64,9 @@ func main() {
 	// Encoding options
 	var encodedKey string
 	switch {
+	case *vip:
+		encodedKey = base64.RawURLEncoding.EncodeToString(rawKeyGenerated)
+		fmt.Printf("%s", encodedKey)
 	case *toBase32:
 		encodedKey = base32.StdEncoding.EncodeToString(rawKeyGenerated)
 		fmt.Printf("%s", encodedKey)
